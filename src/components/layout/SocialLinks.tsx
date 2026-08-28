@@ -2,7 +2,17 @@ import Image from 'next/image';
 import { COMPANY } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
-export default function SocialLinks({ className, iconSize = 18, linkClassName }: { className?: string; iconSize?: number; linkClassName?: string }) {
+export default function SocialLinks({
+  className,
+  iconSize = 18,
+  linkClassName,
+  iconClassName,
+}: {
+  className?: string;
+  iconSize?: number;
+  linkClassName?: string;
+  iconClassName?: string;
+}) {
   const links = [
     COMPANY.facebook && { label: 'Facebook', href: COMPANY.facebook, icon: '/facebook.svg' },
     COMPANY.instagram && { label: 'Instagram', href: COMPANY.instagram, icon: '/instagram.svg' },
@@ -11,8 +21,25 @@ export default function SocialLinks({ className, iconSize = 18, linkClassName }:
   return (
     <div className={cn('flex items-center gap-3', className)}>
       {links.map(({ label, href, icon }) => (
-        <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className={cn('opacity-70 hover:opacity-100 transition-opacity', linkClassName)}>
-          <Image src={icon} alt="" width={iconSize} height={iconSize} aria-hidden />
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={label}
+          className={cn(
+            'opacity-80 transition-opacity hover:opacity-100',
+            linkClassName,
+          )}
+        >
+          <Image
+            src={icon}
+            alt=""
+            width={iconSize}
+            height={iconSize}
+            aria-hidden
+            className={cn('brightness-0 invert', iconClassName)}
+          />
         </a>
       ))}
     </div>
