@@ -14,7 +14,7 @@ export default function PricingPage() {
     <>
       <section className="relative h-64 sm:h-80 overflow-hidden">
         <Image
-          src="/gallery/gallery-06.jpeg"
+          src="/gallery/gallery-06.jpg"
           alt="Charming Occasions venue packages"
           fill
           priority

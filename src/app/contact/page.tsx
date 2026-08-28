@@ -15,7 +15,7 @@ export default function ContactPage() {
     <>
       <section className="relative h-64 sm:h-80 overflow-hidden">
         <Image
-          src="/gallery/gallery-08.jpeg"
+          src="/gallery/gallery-08.jpg"
           alt="Contact Charming Occasions"
           fill
           priority

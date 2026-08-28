@@ -10,7 +10,7 @@ export default function CtaStrip() {
   return (
     <section className="relative overflow-hidden py-24 px-6 lg:px-8">
       <Image
-        src="/gallery/gallery-12.jpeg"
+        src="/gallery/gallery-06.jpg"
         alt="Tables set for a celebration at Charming Occasions"
         fill
         className="object-cover object-center"

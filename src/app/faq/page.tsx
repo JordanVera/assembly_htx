@@ -33,7 +33,7 @@ export default function FaqPage() {
 
       <section className="relative h-64 overflow-hidden sm:h-80">
         <Image
-          src="/gallery/gallery-10.jpeg"
+          src="/gallery/gallery-10.jpg"
           alt="Charming Occasions frequently asked questions"
           fill
           priority
