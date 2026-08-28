@@ -1,23 +1,17 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Phone, MapPin, Mail } from 'lucide-react';
 import { NAV_LINKS, COMPANY } from '@/lib/data';
 import SocialLinks from '@/components/layout/SocialLinks';
+import Logo from '@/components/layout/Logo';
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white/80">
+    <footer className="bg-black text-white/80">
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 lg:px-8">
         <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-3">
           <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt={COMPANY.name}
-                width={160}
-                height={48}
-                className="h-24 w-auto object-contain"
-              />
+            <Link href="/" className="inline-flex" aria-label={COMPANY.name}>
+              <Logo className="scale-125 origin-left sm:scale-[1.35]" />
             </Link>
             <p className="max-w-xs text-sm leading-relaxed">
               All-inclusive intimate event venue in Webster, Texas — bridal

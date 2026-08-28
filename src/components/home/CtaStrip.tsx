@@ -22,7 +22,7 @@ export default function CtaStrip() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-4 text-[10px] tracking-[0.4em] text-[#0D4F3D] uppercase"
+          className="mb-4 text-[10px] tracking-[0.4em] text-[#D4849A] uppercase"
         >
           Plan Your Celebration
         </motion.p>
@@ -54,13 +54,13 @@ export default function CtaStrip() {
         >
           <Link
             href="/contact"
-            className="bg-[#0D4F3D] px-8 py-3.5 text-xs tracking-[0.2em] text-black uppercase transition-colors duration-200 hover:bg-[#C4785A]"
+            className="bg-[#D4849A] px-8 py-3.5 text-xs tracking-[0.2em] text-black uppercase transition-colors duration-200 hover:bg-[#B86B82]"
           >
             Book a Tour
           </Link>
           <a
             href={`tel:${COMPANY.phoneHref}`}
-            className="inline-flex items-center justify-center gap-2 border border-white/50 px-8 py-3.5 text-xs tracking-[0.2em] text-white uppercase transition-all duration-200 hover:border-[#0D4F3D] hover:text-[#0D4F3D]"
+            className="inline-flex items-center justify-center gap-2 border border-white/50 px-8 py-3.5 text-xs tracking-[0.2em] text-white uppercase transition-all duration-200 hover:border-[#D4849A] hover:text-[#D4849A]"
           >
             <Phone size={13} />
             Text {COMPANY.phone}

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
 import { NAV_LINKS, COMPANY } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import SocialLinks from '@/components/layout/SocialLinks';
+import Logo from '@/components/layout/Logo';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,21 +37,14 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:pt-4">
       <nav
         className={cn(
-          'mx-auto flex items-center justify-between rounded-full border bg-primary px-3 py-2 transition-all duration-300 sm:px-4',
+          'mx-auto flex items-center justify-between rounded-full border bg-black px-3 py-2 transition-all duration-300 sm:px-4',
           scrolled
-            ? 'max-w-5xl border-white/20 shadow-lg shadow-[#0D4F3D]/30'
+            ? 'max-w-5xl border-white/15 shadow-lg shadow-black/40'
             : 'max-w-6xl border-transparent',
         )}
       >
-        <Link href="/" className="flex shrink-0 items-center gap-2 pl-1">
-          <Image
-            src="/logo.png"
-            alt={COMPANY.name}
-            width={160}
-            height={48}
-            className="h-12 w-auto sm:h-16"
-            priority
-          />
+        <Link href="/" className="flex shrink-0 items-center pl-1" aria-label={COMPANY.name}>
+          <Logo />
         </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
@@ -118,7 +111,7 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18 }}
             className={cn(
-              'mx-auto mt-2 overflow-hidden rounded-3xl border border-white/20 bg-primary p-4 shadow-xl lg:hidden',
+              'mx-auto mt-2 overflow-hidden rounded-3xl border border-white/15 bg-black p-4 shadow-xl lg:hidden',
               scrolled ? 'max-w-5xl' : 'max-w-6xl',
             )}
           >

@@ -19,7 +19,7 @@ export default function FaqAccordion() {
           value={faq.question}
           className="border-b border-border"
         >
-          <AccordionTrigger className="rounded-none py-6 font-serif text-lg font-normal text-foreground hover:text-[#0D4F3D] hover:no-underline sm:text-xl">
+          <AccordionTrigger className="rounded-none py-6 font-serif text-lg font-normal text-foreground hover:text-[#D4849A] hover:no-underline sm:text-xl">
             {faq.question}
           </AccordionTrigger>
           <AccordionContent className="pb-6 text-base leading-relaxed text-foreground/65">
@@ -27,7 +27,7 @@ export default function FaqAccordion() {
             {faq.link ? (
               <Link
                 href={faq.link.href}
-                className="mt-4 inline-flex items-center gap-2 text-xs tracking-[0.2em] text-[#0D4F3D] uppercase transition-all hover:gap-3"
+                className="mt-4 inline-flex items-center gap-2 text-xs tracking-[0.2em] text-[#D4849A] uppercase transition-all hover:gap-3"
               >
                 {faq.link.label} <ArrowRight size={12} />
               </Link>

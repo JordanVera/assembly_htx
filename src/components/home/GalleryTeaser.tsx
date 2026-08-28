@@ -20,7 +20,7 @@ export default function GalleryTeaser() {
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-[#0D4F3D] text-[10px] tracking-[0.35em] uppercase mb-3"
+              className="text-[#D4849A] text-[10px] tracking-[0.35em] uppercase mb-3"
             >
               Our Space
             </motion.p>
@@ -36,7 +36,7 @@ export default function GalleryTeaser() {
           </div>
           <Link
             href="/gallery"
-            className="inline-flex items-center gap-2 text-[#0D4F3D] text-xs tracking-[0.2em] uppercase hover:gap-3 transition-all duration-200"
+            className="inline-flex items-center gap-2 text-[#D4849A] text-xs tracking-[0.2em] uppercase hover:gap-3 transition-all duration-200"
           >
             View All Photos <ArrowRight size={12} />
           </Link>
