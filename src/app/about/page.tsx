@@ -4,21 +4,35 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import CtaStrip from '@/components/home/CtaStrip';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
-import { ABOUT_CONTENT, COMPANY, VENUE_HIGHLIGHTS } from '@/lib/data';
+import {
+  getAboutPage,
+  getHomePage,
+  getReviews,
+  getSiteSettings,
+} from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: `About | ${COMPANY.name}`,
-  description:
-    'Learn about Charming Occasions — an all-inclusive intimate event venue in Webster, Texas for bridal showers, baby showers, and celebrations.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: `About | ${company.name}`,
+    description: `Learn about ${company.name} — ${company.tagline} in Houston, Texas.`,
+  };
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [company, about, home, reviews] = await Promise.all([
+    getSiteSettings(),
+    getAboutPage(),
+    getHomePage(),
+    getReviews(),
+  ]);
+
   return (
     <>
       <section className="relative h-64 sm:h-80 overflow-hidden">
         <Image
-          src="/about-hero.jpg"
-          alt="Charming Occasions event venue"
+          src={about.heroImageSrc}
+          alt={`${company.name} event venue`}
           fill
           priority
           className="object-cover object-center"
@@ -26,7 +40,9 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pt-20">
-          <p className="text-[#D4849A] text-[10px] tracking-[0.4em] uppercase mb-4">Our Story</p>
+          <p className="text-[#D4849A] text-[10px] tracking-[0.4em] uppercase mb-4">
+            {about.eyebrow}
+          </p>
           <h1 className="font-serif text-white text-5xl sm:text-6xl">About Us</h1>
         </div>
       </section>
@@ -34,17 +50,17 @@ export default function AboutPage() {
       <section className="py-20 px-6 lg:px-8 max-w-5xl mx-auto">
         <div className="flex flex-col gap-8">
           <h2 className="font-serif text-4xl sm:text-5xl leading-tight text-foreground">
-            All-inclusive intimate venue in{' '}
-            <em className="italic text-[#D4849A]">Webster, Texas.</em>
+            {about.headline}{' '}
+            <em className="italic text-[#D4849A]">{about.headlineAccent}</em>
           </h2>
-          <p className="text-foreground/65 text-lg leading-relaxed">{ABOUT_CONTENT.intro}</p>
-          <p className="text-foreground/65 text-lg leading-relaxed">{ABOUT_CONTENT.body}</p>
-          <p className="text-foreground/65 text-lg leading-relaxed">{ABOUT_CONTENT.evolution}</p>
+          <p className="text-foreground/65 text-lg leading-relaxed">{about.intro}</p>
+          <p className="text-foreground/65 text-lg leading-relaxed">{about.body}</p>
+          <p className="text-foreground/65 text-lg leading-relaxed">{about.evolution}</p>
           <div className="grid sm:grid-cols-3 gap-8 pt-8 border-t border-border">
             {[
-              { number: `${COMPANY.maxGuests}`, label: 'Max Guests' },
-              { number: 'NASA Pkwy', label: 'Webster Location' },
-              { number: '5★', label: `${COMPANY.reviewCount}+ Reviews` },
+              { number: `${company.maxGuests}`, label: 'Max Guests' },
+              { number: company.serviceArea.split('·')[0]?.trim() || 'Houston', label: 'Location' },
+              { number: `${company.googleRating}★`, label: `${company.reviewCount}+ Reviews` },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="font-serif text-2xl text-[#D4849A]">{stat.number}</p>
@@ -57,7 +73,7 @@ export default function AboutPage() {
 
       <section className="py-20 px-6 lg:px-8 bg-[#F5EDE4]">
         <div className="max-w-7xl mx-auto grid sm:grid-cols-2 gap-6">
-          {VENUE_HIGHLIGHTS.map((item) => (
+          {about.highlights.map((item) => (
             <div key={item.title} className="bg-white border border-border p-8">
               <h3 className="font-serif text-2xl text-foreground mb-3">{item.title}</h3>
               <p className="text-foreground/60 leading-relaxed">{item.description}</p>
@@ -66,7 +82,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <TestimonialsSection />
+      <TestimonialsSection company={company} reviews={reviews.slice(0, 3)} />
 
       <section className="py-16 px-6 text-center">
         <Link
@@ -77,7 +93,16 @@ export default function AboutPage() {
         </Link>
       </section>
 
-      <CtaStrip />
+      <CtaStrip
+        company={company}
+        content={{
+          ctaEyebrow: home.ctaEyebrow,
+          ctaHeadline: home.ctaHeadline,
+          ctaHeadlineAccent: home.ctaHeadlineAccent,
+          ctaBody: home.ctaBody,
+          ctaBackgroundSrc: home.ctaBackgroundSrc,
+        }}
+      />
     </>
   );
 }

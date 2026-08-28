@@ -10,20 +10,20 @@ import {
   useTransform,
 } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { COMPANY } from '@/lib/data';
+import type { HomePageContent, SiteSettings } from '@/sanity/types';
 
 const SLIDE_DURATION_MS = 7000;
 
-const HERO_SLIDES = [
-  { src: '/gallery/gallery-03.jpg', alt: 'Assembly venue photo 3' },
-  { src: '/hero.jpg', alt: 'Venue hero' },
-  { src: '/gallery/gallery-02.jpg', alt: 'Assembly venue photo 2' },
-  { src: '/gallery/gallery-04.jpg', alt: 'Assembly venue photo 4' },
-] as const;
-
-export default function Hero() {
+export default function Hero({
+  company,
+  content,
+}: {
+  company: SiteSettings;
+  content: HomePageContent;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const slides = content.heroSlides;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -33,13 +33,14 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   useEffect(() => {
+    if (slides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentIndex((index) => (index + 1) % HERO_SLIDES.length);
+      setCurrentIndex((index) => (index + 1) % slides.length);
     }, SLIDE_DURATION_MS);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
-  const slide = HERO_SLIDES[currentIndex];
+  const slide = slides[currentIndex] ?? slides[0];
 
   return (
     <section
@@ -59,14 +60,16 @@ export default function Hero() {
               scale: { duration: SLIDE_DURATION_MS / 1000, ease: 'linear' },
             }}
           >
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              priority={currentIndex === 0}
-              className="object-cover object-center"
-              sizes="100vw"
-            />
+            {slide ? (
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={currentIndex === 0}
+                className="object-cover object-center"
+                sizes="100vw"
+              />
+            ) : null}
           </motion.div>
         </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
@@ -82,7 +85,8 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-[#D4849A] text-xs tracking-[0.4em] uppercase mb-6"
         >
-          Houston, Texas · Up to {COMPANY.maxGuests} Guests
+          {content.heroEyebrow ||
+            `Houston, Texas · Up to ${company.maxGuests} Guests`}
         </motion.p>
 
         <motion.h1
@@ -91,8 +95,8 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.35 }}
           className="font-serif text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight max-w-4xl"
         >
-          Boho-Chic Boutique Event Space{' '}
-          <em className="italic text-[#D4849A]">Assembly</em>
+          {content.heroHeadline}{' '}
+          <em className="italic text-[#D4849A]">{content.heroHeadlineAccent}</em>
         </motion.h1>
 
         <motion.p
@@ -101,9 +105,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.55 }}
           className="mt-6 text-white/75 text-base sm:text-lg max-w-xl leading-relaxed"
         >
-          Welcome to Assembly — a boho-chic, sun-laden boutique event space in
-          central Houston. Essentially appointed and perfect for your next
-          intimate celebration.
+          {content.heroSubhead}
         </motion.p>
 
         <motion.div

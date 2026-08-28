@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ABOUT_CONTENT, COMPANY, VENUE_HIGHLIGHTS } from '@/lib/data';
+import type { HomePageContent, SiteSettings } from '@/sanity/types';
 
 const anim = (delay: number) => ({
   initial: { opacity: 0, y: 32 },
@@ -11,18 +11,24 @@ const anim = (delay: number) => ({
   transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
 });
 
-export default function Welcome() {
+export default function Welcome({
+  company,
+  content,
+}: {
+  company: SiteSettings;
+  content: HomePageContent;
+}) {
   return (
     <section className="py-24 px-6 lg:px-8 bg-background">
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-16 items-start">
           <motion.div {...anim(0)} className="flex flex-col gap-4">
             <span className="text-[#D4849A] text-[10px] tracking-[0.35em] uppercase">
-              Welcome
+              {content.welcomeEyebrow}
             </span>
             <div className="h-px w-16 bg-[#D4849A]" />
             <p className="text-xs tracking-[0.2em] uppercase text-foreground/40 mt-4">
-              {COMPANY.serviceArea}
+              {company.serviceArea}
             </p>
           </motion.div>
 
@@ -31,20 +37,22 @@ export default function Welcome() {
               {...anim(0.1)}
               className="font-serif text-4xl sm:text-5xl leading-tight text-foreground"
             >
-              Your premier venue for{' '}
-              <em className="italic text-[#D4849A]">memorable celebrations.</em>
+              {content.welcomeHeadline}{' '}
+              <em className="italic text-[#D4849A]">
+                {content.welcomeHeadlineAccent}
+              </em>
             </motion.h2>
             <motion.p {...anim(0.2)} className="text-foreground/65 leading-relaxed text-base sm:text-lg">
-              {ABOUT_CONTENT.intro} {ABOUT_CONTENT.body}
+              {content.intro} {content.body}
             </motion.p>
             <motion.p {...anim(0.3)} className="text-foreground/65 leading-relaxed text-base sm:text-lg">
-              {ABOUT_CONTENT.evolution}
+              {content.evolution}
             </motion.p>
             <motion.div {...anim(0.4)} className="flex gap-8 pt-4 border-t border-border">
               {[
-                { number: `${COMPANY.maxGuests}`, label: 'Max Guests' },
-                { number: `${COMPANY.googleRating}★`, label: 'Google Rating' },
-                { number: `${COMPANY.reviewCount}+`, label: 'Reviews' },
+                { number: `${company.maxGuests}`, label: 'Max Guests' },
+                { number: `${company.googleRating}★`, label: 'Google Rating' },
+                { number: `${company.reviewCount}+`, label: 'Reviews' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <p className="font-serif text-2xl text-[#D4849A]">{stat.number}</p>
@@ -64,7 +72,7 @@ export default function Welcome() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6 mt-20">
-          {VENUE_HIGHLIGHTS.map((item, i) => (
+          {content.highlights.map((item, i) => (
             <motion.div
               key={item.title}
               {...anim(0.1 * i)}

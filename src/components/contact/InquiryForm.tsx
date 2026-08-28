@@ -29,7 +29,11 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export default function InquiryForm() {
+export default function InquiryForm({
+  pdfUrl = RENTAL_POLICY.pdfUrl,
+}: {
+  pdfUrl?: string;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -128,7 +132,7 @@ export default function InquiryForm() {
             </Link>{" "}
             and{" "}
             <a
-              href={RENTAL_POLICY.pdfUrl}
+              href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#D4849A] underline-offset-4 hover:underline"

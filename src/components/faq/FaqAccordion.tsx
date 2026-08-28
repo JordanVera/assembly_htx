@@ -8,12 +8,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { FAQS } from '@/lib/data';
+import type { FaqContent } from '@/sanity/types';
 
-export default function FaqAccordion() {
+export default function FaqAccordion({ faqs }: { faqs: FaqContent[] }) {
   return (
     <Accordion multiple hiddenUntilFound className="w-full">
-      {FAQS.map((faq) => (
+      {faqs.map((faq) => (
         <AccordionItem
           key={faq.question}
           value={faq.question}

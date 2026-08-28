@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import { COMPANY } from '@/lib/data';
+import SiteChrome from '@/components/layout/SiteChrome';
+import { getSiteSettings } from '@/lib/content';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -19,34 +18,38 @@ const playfair = Playfair_Display({
   style: ['normal', 'italic'],
 });
 
-export const metadata: Metadata = {
-  title: 'Assembly HTX — Houston Event Venue',
-  description:
-    'All-inclusive intimate event venue in Webster, Texas. Bridal showers, baby showers, and celebrations for up to 65 guests.',
-  keywords:
-    'Assembly HTX, event venue Webster TX, bridal shower venue Houston, baby shower venue Bay Area Houston',
-  openGraph: {
-    title: `${COMPANY.name} | ${COMPANY.tagline}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: company.seoTitle || `${company.name} — Houston Event Venue`,
     description:
-      'Premier intimate event venue on NASA Parkway — all-inclusive packages for showers and celebrations.',
-    type: 'website',
-  },
-};
+      company.seoDescription ||
+      `${company.tagline} in Houston. Celebrations for up to ${company.maxGuests} guests.`,
+    keywords: `${company.name}, event venue Houston, boutique venue Houston, bridal shower venue Houston`,
+    openGraph: {
+      title: `${company.name} | ${company.tagline}`,
+      description:
+        company.seoDescription ||
+        `${company.tagline} — boutique celebrations for up to ${company.maxGuests} guests.`,
+      type: 'website',
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const company = await getSiteSettings();
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteChrome company={company}>{children}</SiteChrome>
       </body>
     </html>
   );

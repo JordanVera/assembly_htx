@@ -2,28 +2,36 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import CtaStrip from '@/components/home/CtaStrip';
 import FaqAccordion from '@/components/faq/FaqAccordion';
-import { COMPANY, FAQS } from '@/lib/data';
+import { getFaqs, getHomePage, getSiteSettings } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: `FAQ | ${COMPANY.name}`,
-  description:
-    'Frequently asked questions about Charming Occasions — packages, catering, alcohol policy, reservations, and touring the venue in Webster, TX.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: `FAQ | ${company.name}`,
+    description: `Frequently asked questions about ${company.name} — packages, booking, and touring the venue in Houston.`,
+  };
+}
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQS.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.link ? `${faq.answer} ${faq.link.label}.` : faq.answer,
-    },
-  })),
-};
+export default async function FaqPage() {
+  const [company, faqs, home] = await Promise.all([
+    getSiteSettings(),
+    getFaqs(),
+    getHomePage(),
+  ]);
 
-export default function FaqPage() {
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.link ? `${faq.answer} ${faq.link.label}.` : faq.answer,
+      },
+    })),
+  };
+
   return (
     <>
       <script
@@ -34,7 +42,7 @@ export default function FaqPage() {
       <section className="relative h-64 overflow-hidden sm:h-80">
         <Image
           src="/gallery/gallery-10.jpg"
-          alt="Charming Occasions frequently asked questions"
+          alt={`${company.name} frequently asked questions`}
           fill
           priority
           className="object-cover object-center"
@@ -52,14 +60,23 @@ export default function FaqPage() {
       <section className="mx-auto max-w-3xl px-6 py-20 lg:px-8">
         <div className="mb-12 text-center">
           <p className="text-base leading-relaxed text-foreground/65 sm:text-lg">
-            Everything you need to know about hosting your celebration at
-            Charming Occasions — from packages and catering to booking a tour.
+            Everything you need to know about hosting your celebration at{' '}
+            {company.name} — from packages and catering to booking a tour.
           </p>
         </div>
-        <FaqAccordion />
+        <FaqAccordion faqs={faqs} />
       </section>
 
-      <CtaStrip />
+      <CtaStrip
+        company={company}
+        content={{
+          ctaEyebrow: home.ctaEyebrow,
+          ctaHeadline: home.ctaHeadline,
+          ctaHeadlineAccent: home.ctaHeadlineAccent,
+          ctaBody: home.ctaBody,
+          ctaBackgroundSrc: home.ctaBackgroundSrc,
+        }}
+      />
     </>
   );
 }

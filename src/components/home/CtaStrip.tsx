@@ -4,14 +4,27 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Phone } from 'lucide-react';
-import { COMPANY } from '@/lib/data';
+import type { HomePageContent, SiteSettings } from '@/sanity/types';
 
-export default function CtaStrip() {
+export default function CtaStrip({
+  company,
+  content,
+}: {
+  company: SiteSettings;
+  content: Pick<
+    HomePageContent,
+    | 'ctaEyebrow'
+    | 'ctaHeadline'
+    | 'ctaHeadlineAccent'
+    | 'ctaBody'
+    | 'ctaBackgroundSrc'
+  >;
+}) {
   return (
     <section className="relative overflow-hidden py-24 px-6 lg:px-8">
       <Image
-        src="/gallery/gallery-06.jpg"
-        alt="Tables set for a celebration at Charming Occasions"
+        src={content.ctaBackgroundSrc}
+        alt=""
         fill
         className="object-cover object-center"
         sizes="100vw"
@@ -24,7 +37,7 @@ export default function CtaStrip() {
           viewport={{ once: true }}
           className="mb-4 text-[10px] tracking-[0.4em] text-[#D4849A] uppercase"
         >
-          Plan Your Celebration
+          {content.ctaEyebrow}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
@@ -33,7 +46,8 @@ export default function CtaStrip() {
           transition={{ delay: 0.1 }}
           className="mb-6 font-serif text-4xl leading-tight text-white sm:text-5xl md:text-6xl"
         >
-          Let&apos;s Make It <em className="italic">Unforgettable</em>
+          {content.ctaHeadline}{' '}
+          <em className="italic">{content.ctaHeadlineAccent}</em>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -42,8 +56,7 @@ export default function CtaStrip() {
           transition={{ delay: 0.2 }}
           className="mx-auto mb-10 max-w-xl text-base text-white/75 sm:text-lg"
         >
-          Text us to schedule a tour or inquire about availability. We&apos;d
-          love to host your next shower or celebration.
+          {content.ctaBody}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -59,11 +72,11 @@ export default function CtaStrip() {
             Book a Tour
           </Link>
           <a
-            href={`tel:${COMPANY.phoneHref}`}
+            href={`tel:${company.phoneHref}`}
             className="inline-flex items-center justify-center gap-2 border border-white/50 px-8 py-3.5 text-xs tracking-[0.2em] text-white uppercase transition-all duration-200 hover:border-[#D4849A] hover:text-[#D4849A]"
           >
             <Phone size={13} />
-            Text {COMPANY.phone}
+            Text {company.phone}
           </a>
         </motion.div>
       </div>

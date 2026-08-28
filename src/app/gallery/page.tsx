@@ -1,21 +1,30 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import GalleryGrid from '@/components/gallery/GalleryGrid';
-import { COMPANY } from '@/lib/data';
+import { getGalleryImages, getSiteSettings } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: `Gallery | ${COMPANY.name}`,
-  description:
-    'Browse photos of bridal showers, baby showers, and celebrations at Charming Occasions event venue in Webster, TX.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: `Gallery | ${company.name}`,
+    description: `Browse photos of ${company.name} — ${company.tagline} in Houston, TX.`,
+  };
+}
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [company, images] = await Promise.all([
+    getSiteSettings(),
+    getGalleryImages(),
+  ]);
+
+  const heroSrc = images[0]?.src || '/gallery/gallery-01.jpg';
+
   return (
     <>
       <section className="relative h-64 sm:h-80 overflow-hidden">
         <Image
-          src="/gallery/gallery-01.jpg"
-          alt="Charming Occasions gallery"
+          src={heroSrc}
+          alt={`${company.name} gallery`}
           fill
           priority
           className="object-cover object-center"
@@ -29,7 +38,7 @@ export default function GalleryPage() {
       </section>
 
       <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
-        <GalleryGrid />
+        <GalleryGrid images={images} />
       </section>
     </>
   );

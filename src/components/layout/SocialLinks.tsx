@@ -1,21 +1,23 @@
 import Image from 'next/image';
-import { COMPANY } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import type { SiteSettings } from '@/sanity/types';
 
 export default function SocialLinks({
+  company,
   className,
   iconSize = 18,
   linkClassName,
   iconClassName,
 }: {
+  company: SiteSettings;
   className?: string;
   iconSize?: number;
   linkClassName?: string;
   iconClassName?: string;
 }) {
   const links = [
-    COMPANY.facebook && { label: 'Facebook', href: COMPANY.facebook, icon: '/facebook.svg' },
-    COMPANY.instagram && { label: 'Instagram', href: COMPANY.instagram, icon: '/instagram.svg' },
+    company.facebook && { label: 'Facebook', href: company.facebook, icon: '/facebook.svg' },
+    company.instagram && { label: 'Instagram', href: company.instagram, icon: '/instagram.svg' },
   ].filter(Boolean) as Array<{ label: string; href: string; icon: string }>;
   if (!links.length) return null;
   return (

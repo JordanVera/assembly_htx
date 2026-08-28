@@ -3,9 +3,13 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
-import { VENUE_PACKAGES } from '@/lib/pricing';
+import type { PricingPackageContent } from '@/sanity/types';
 
-export default function PricingPreview() {
+export default function PricingPreview({
+  packages,
+}: {
+  packages: PricingPackageContent[];
+}) {
   return (
     <section className="py-24 bg-[#0e0c08]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -30,7 +34,7 @@ export default function PricingPreview() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {VENUE_PACKAGES.map((pkg, i) => (
+          {packages.map((pkg, i) => (
             <motion.div
               key={pkg.id}
               initial={{ opacity: 0, y: 40 }}

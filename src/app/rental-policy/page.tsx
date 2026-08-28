@@ -3,21 +3,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ExternalLink, FileText } from 'lucide-react';
 import CtaStrip from '@/components/home/CtaStrip';
-import { COMPANY, RENTAL_POLICY } from '@/lib/data';
+import {
+  getHomePage,
+  getRentalPolicy,
+  getSiteSettings,
+} from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: `Rental Policy | ${COMPANY.name}`,
-  description:
-    'Assembly HTX rental contract and policy — payments, cancellation, time guidelines, decor protocol, cleaning, and liability waiver.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: `Rental Policy | ${company.name}`,
+    description: `${company.name} rental contract and policy — payments, cancellation, time guidelines, decor protocol, cleaning, and liability waiver.`,
+  };
+}
 
-export default function RentalPolicyPage() {
+export default async function RentalPolicyPage() {
+  const [company, rentalPolicy, home] = await Promise.all([
+    getSiteSettings(),
+    getRentalPolicy(),
+    getHomePage(),
+  ]);
+
   return (
     <>
       <section className="relative h-64 overflow-hidden sm:h-80">
         <Image
-          src="/gallery/gallery-12.jpg"
-          alt="Assembly HTX rental policy"
+          src={rentalPolicy.heroImageSrc}
+          alt={`${company.name} rental policy`}
           fill
           priority
           className="object-cover object-center"
@@ -37,11 +49,11 @@ export default function RentalPolicyPage() {
       <section className="mx-auto max-w-3xl px-6 py-20 lg:px-8">
         <div className="mb-12 text-center">
           <p className="text-base leading-relaxed text-foreground/65 sm:text-lg">
-            {RENTAL_POLICY.summary}
+            {rentalPolicy.summary}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href={RENTAL_POLICY.pdfUrl}
+              href={rentalPolicy.pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#D4849A] px-8 py-3.5 text-xs tracking-[0.2em] text-black uppercase transition-colors duration-200 hover:bg-[#B86B82]"
@@ -60,7 +72,7 @@ export default function RentalPolicyPage() {
         </div>
 
         <div className="space-y-10">
-          {RENTAL_POLICY.sections.map((section) => (
+          {rentalPolicy.sections.map((section) => (
             <article
               key={section.title}
               className="border border-border bg-card p-6 sm:p-8"
@@ -89,7 +101,7 @@ export default function RentalPolicyPage() {
         <p className="mt-12 text-center text-sm leading-relaxed text-foreground/55">
           This page is a summary only. The official rental contract is the{' '}
           <a
-            href={RENTAL_POLICY.pdfUrl}
+            href={rentalPolicy.pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#D4849A] underline-offset-4 hover:underline"
@@ -107,7 +119,16 @@ export default function RentalPolicyPage() {
         </p>
       </section>
 
-      <CtaStrip />
+      <CtaStrip
+        company={company}
+        content={{
+          ctaEyebrow: home.ctaEyebrow,
+          ctaHeadline: home.ctaHeadline,
+          ctaHeadlineAccent: home.ctaHeadlineAccent,
+          ctaBody: home.ctaBody,
+          ctaBackgroundSrc: home.ctaBackgroundSrc,
+        }}
+      />
     </>
   );
 }

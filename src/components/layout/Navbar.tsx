@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
-import { NAV_LINKS, COMPANY } from '@/lib/data';
+import { NAV_LINKS } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import SocialLinks from '@/components/layout/SocialLinks';
 import Logo from '@/components/layout/Logo';
+import type { SiteSettings } from '@/sanity/types';
 
-export default function Navbar() {
+export default function Navbar({ company }: { company: SiteSettings }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -43,7 +44,7 @@ export default function Navbar() {
             : 'max-w-6xl border-transparent',
         )}
       >
-        <Link href="/" className="flex shrink-0 items-center pl-1" aria-label={COMPANY.name}>
+        <Link href="/" className="flex shrink-0 items-center pl-1" aria-label={company.name}>
           <Logo />
         </Link>
 
@@ -78,6 +79,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-1.5">
           <SocialLinks
+            company={company}
             className="mr-4 md:mr-2"
             iconSize={18}
             linkClassName="text-white/80 hover:text-white"
@@ -144,11 +146,11 @@ export default function Navbar() {
                 Book a Tour
               </Link>
               <a
-                href={`tel:${COMPANY.phoneHref}`}
+                href={`tel:${company.phoneHref}`}
                 className="flex items-center justify-center gap-2 rounded-xl border border-white/40 px-4 py-3 text-center text-sm font-medium text-white"
               >
                 <Phone size={14} />
-                {COMPANY.phone}
+                {company.phone}
               </a>
             </div>
           </motion.div>

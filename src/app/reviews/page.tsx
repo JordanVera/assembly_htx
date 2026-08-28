@@ -1,15 +1,22 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ExternalLink, Star } from 'lucide-react';
-import { COMPANY, REVIEWS } from '@/lib/data';
+import { getReviews, getSiteSettings } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: `Reviews | ${COMPANY.name}`,
-  description: `${COMPANY.googleRating} stars from ${COMPANY.reviewCount} Google reviews for ${COMPANY.name} in Houston.`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getSiteSettings();
+  return {
+    title: `Reviews | ${company.name}`,
+    description: `${company.googleRating} stars from ${company.reviewCount} Google reviews for ${company.name} in Houston.`,
+  };
+}
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const [company, reviews] = await Promise.all([
+    getSiteSettings(),
+    getReviews(),
+  ]);
+
   return (
     <>
       <section className="relative h-64 sm:h-80 overflow-hidden">
@@ -18,12 +25,12 @@ export default function ReviewsPage() {
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pt-20">
           <p className="text-[#D4849A] text-[10px] tracking-[0.4em] uppercase mb-4">Guest Love</p>
           <h1 className="font-serif text-white text-5xl sm:text-6xl">Reviews</h1>
-          <p className="mt-4 text-white/70 text-sm">{COMPANY.googleRating} ★ · {COMPANY.reviewCount} Google reviews</p>
+          <p className="mt-4 text-white/70 text-sm">{company.googleRating} ★ · {company.reviewCount} Google reviews</p>
         </div>
       </section>
       <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8">
-          {REVIEWS.map((review) => (
+          {reviews.map((review) => (
             <blockquote key={review.id} className="bg-card border border-border p-8">
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: review.rating }).map((_, n) => (
@@ -39,7 +46,7 @@ export default function ReviewsPage() {
           ))}
         </div>
         <div className="mt-16 text-center">
-          <a href={COMPANY.googleReviewsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#D4849A] text-white text-xs tracking-[0.2em] uppercase font-medium hover:opacity-90 transition-opacity">
+          <a href={company.googleReviewsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#D4849A] text-white text-xs tracking-[0.2em] uppercase font-medium hover:opacity-90 transition-opacity">
             Read & Review on Google <ExternalLink size={14} />
           </a>
         </div>

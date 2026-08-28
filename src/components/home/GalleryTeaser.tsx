@@ -3,14 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { GALLERY_IMAGES } from '@/lib/data';
 import { ArrowRight } from 'lucide-react';
+import type { GalleryImageContent } from '@/sanity/types';
 
-export default function GalleryTeaser() {
-  const images = GALLERY_IMAGES.filter(
-    (img) => 'featured' in img && img.featured,
-  );
-
+export default function GalleryTeaser({
+  images,
+}: {
+  images: GalleryImageContent[];
+}) {
   return (
     <section className="py-24 px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">

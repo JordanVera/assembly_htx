@@ -2,9 +2,15 @@
 
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
-import { REVIEWS, COMPANY } from '@/lib/data';
+import type { ReviewContent, SiteSettings } from '@/sanity/types';
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({
+  company,
+  reviews,
+}: {
+  company: SiteSettings;
+  reviews: ReviewContent[];
+}) {
   return (
     <section className="py-24 px-6 lg:px-8 bg-[#F5EDE4]">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +24,7 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {REVIEWS.map((review, i) => (
+          {reviews.map((review, i) => (
             <motion.blockquote
               key={review.id}
               initial={{ opacity: 0, y: 24 }}
@@ -47,12 +53,12 @@ export default function TestimonialsSection() {
 
         <div className="mt-12 text-center">
           <a
-            href={COMPANY.googleReviewsUrl}
+            href={company.googleReviewsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3.5 border border-border text-foreground/70 text-xs tracking-[0.2em] uppercase hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
           >
-            Read All {COMPANY.reviewCount} Google Reviews
+            Read All {company.reviewCount} Google Reviews
           </a>
         </div>
       </div>

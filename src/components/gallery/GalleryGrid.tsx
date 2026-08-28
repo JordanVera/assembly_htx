@@ -6,31 +6,28 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import {
-  GALLERY_IMAGES,
   GALLERY_CATEGORIES,
   type GalleryCategory,
 } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import type { GalleryImageContent } from "@/sanity/types";
 
 type GalleryGridProps = {
+  images: GalleryImageContent[];
   initialCategory?: GalleryCategory;
 };
 
 export default function GalleryGrid({
+  images,
   initialCategory = "all",
 }: GalleryGridProps) {
   const [category, setCategory] = useState<GalleryCategory>(initialCategory);
   const [selected, setSelected] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
-    if (category === "all") return GALLERY_IMAGES;
-    return GALLERY_IMAGES.filter((img) => img.category === category);
-  }, [category]);
-
-  const labelFor = (img: (typeof GALLERY_IMAGES)[number]) => {
-    const match = GALLERY_CATEGORIES.find((c) => c.id === img.category);
-    return match?.label ?? img.category;
-  };
+    if (category === "all") return images;
+    return images.filter((img) => img.category === category);
+  }, [category, images]);
 
   const close = () => setSelected(null);
   const prev = () =>
@@ -99,7 +96,7 @@ export default function GalleryGrid({
 
       <Dialog.Root open={selected !== null} onOpenChange={(o) => !o && close()}>
         <AnimatePresence>
-          {selected !== null && (
+          {selected !== null && filtered[selected] ? (
             <Dialog.Portal forceMount>
               <Dialog.Overlay asChild>
                 <motion.div
@@ -139,7 +136,7 @@ export default function GalleryGrid({
                 </motion.div>
               </Dialog.Content>
             </Dialog.Portal>
-          )}
+          ) : null}
         </AnimatePresence>
       </Dialog.Root>
     </>
