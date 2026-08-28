@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { RENTAL_POLICY } from "@/lib/data";
 
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -20,6 +22,9 @@ const schema = z.object({
   guestCount: z.string().optional(),
   packageInterest: z.string().optional(),
   message: z.string().min(10, "Please tell us about your event"),
+  policyAcknowledged: z.boolean().refine((value) => value, {
+    message: "You must acknowledge the rental policy",
+  }),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -34,6 +39,9 @@ export default function InquiryForm() {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      policyAcknowledged: false,
+    },
   });
 
   const onSubmit = async (_data: FormValues) => {
@@ -97,6 +105,44 @@ export default function InquiryForm() {
           className={errors.message ? "border-destructive" : ""}
         />
         {errors.message && <p className="text-destructive text-xs">{errors.message.message}</p>}
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/30 p-4">
+          <input
+            id="policyAcknowledged"
+            type="checkbox"
+            {...register("policyAcknowledged")}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#D4849A]"
+          />
+          <Label
+            htmlFor="policyAcknowledged"
+            className="cursor-pointer text-sm leading-relaxed font-normal text-foreground/80"
+          >
+            I have read and agree to the{" "}
+            <Link
+              href="/rental-policy"
+              className="text-[#D4849A] underline-offset-4 hover:underline"
+            >
+              rental policy
+            </Link>{" "}
+            and{" "}
+            <a
+              href={RENTAL_POLICY.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#D4849A] underline-offset-4 hover:underline"
+            >
+              rental contract (PDF)
+            </a>
+            . *
+          </Label>
+        </div>
+        {errors.policyAcknowledged && (
+          <p className="text-destructive text-xs">
+            {errors.policyAcknowledged.message}
+          </p>
+        )}
       </div>
 
       <Button

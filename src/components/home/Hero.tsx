@@ -15,9 +15,9 @@ import { COMPANY } from '@/lib/data';
 const SLIDE_DURATION_MS = 7000;
 
 const HERO_SLIDES = [
+  { src: '/gallery/gallery-03.jpg', alt: 'Assembly venue photo 3' },
   { src: '/hero.jpg', alt: 'Venue hero' },
   { src: '/gallery/gallery-02.jpg', alt: 'Assembly venue photo 2' },
-  { src: '/gallery/gallery-03.jpg', alt: 'Assembly venue photo 3' },
   { src: '/gallery/gallery-04.jpg', alt: 'Assembly venue photo 4' },
 ] as const;
 
@@ -42,7 +42,10 @@ export default function Hero() {
   const slide = HERO_SLIDES[currentIndex];
 
   return (
-    <section ref={ref} className="relative h-screen min-h-[600px] overflow-hidden">
+    <section
+      ref={ref}
+      className="relative h-screen min-h-[600px] overflow-hidden"
+    >
       <motion.div style={{ y }} className="absolute inset-0">
         <AnimatePresence mode="sync">
           <motion.div
@@ -88,7 +91,8 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.35 }}
           className="font-serif text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight max-w-4xl"
         >
-          Boho-Chic Boutique Event Space <em className="italic text-[#D4849A]">Assembly</em>
+          Boho-Chic Boutique Event Space{' '}
+          <em className="italic text-[#D4849A]">Assembly</em>
         </motion.h1>
 
         <motion.p
@@ -97,7 +101,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.55 }}
           className="mt-6 text-white/75 text-base sm:text-lg max-w-xl leading-relaxed"
         >
-          Welcome to Assembly — a boho-chic, sun-laden boutique event space in central Houston. Essentially appointed and perfect for your next intimate celebration.
+          Welcome to Assembly — a boho-chic, sun-laden boutique event space in
+          central Houston. Essentially appointed and perfect for your next
+          intimate celebration.
         </motion.p>
 
         <motion.div

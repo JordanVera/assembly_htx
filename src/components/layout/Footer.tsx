@@ -78,7 +78,15 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {COMPANY.name}. All Rights Reserved.
           </p>
-          <p>{COMPANY.serviceArea}</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <Link
+              href="/rental-policy"
+              className="transition-colors hover:text-white"
+            >
+              Rental Policy
+            </Link>
+            <p>{COMPANY.serviceArea}</p>
+          </div>
         </div>
       </div>
     </footer>

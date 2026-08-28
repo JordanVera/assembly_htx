@@ -21,6 +21,57 @@ export const COMPANY = {
   reviewCount: 32,
 };
 
+export const RENTAL_POLICY = {
+  pdfUrl:
+    'https://www.assemblyhtx.com/_files/ugd/cd3368_12a6660adeee4600bd311a5b7c87b3d3.pdf',
+  title: 'Rental Contract & Policy',
+  summary:
+    'Please read this document in its entirety. Your signature is required on your booking form to confirm you have read and agree to these terms.',
+  sections: [
+    {
+      title: 'Payments',
+      items: [
+        'Credit card only — card must be saved on file at time of initial invoice payment.',
+        'Events within 45 days must pay the full amount.',
+        'Events booked outside 45 days pay a 50% deposit; final balance is auto-deducted 30 days prior.',
+      ],
+    },
+    {
+      title: 'Cancellation Policy',
+      items: [
+        'All payments are non-refundable — no exceptions.',
+        'Payments are transferable only; new date must be booked within 6 months of the original event date.',
+        '45 business days notice required for cancellation; $100 penalty for cancellations with date change.',
+      ],
+    },
+    {
+      title: 'Time Guidelines',
+      items: [
+        'Your booked time slot includes setup and cleanup — access and exit times are strict.',
+        'Time extensions are not available on the day of your event.',
+        'Late exit penalties apply in 15-minute increments ($50); PM parties must exit by 11 PM.',
+      ],
+    },
+    {
+      title: 'Decor & Cleaning',
+      items: [
+        'No screws, nails, or staples; no glitter or confetti ($50 cleanup fee).',
+        'Do not move plants or damage walls, floors, beams, or property.',
+        'Renter cleaning protocol required — leave the space as found or pre-arrange a $175 cleaning fee at booking.',
+        '$200 security deposit required 48 hours before your event.',
+      ],
+    },
+    {
+      title: 'Liability & Waiver',
+      items: [
+        'Renter assumes all risks and releases Assembly Event Space, LLC from liability.',
+        'Renter indemnifies Assembly HTX for claims arising from the event or use of the facility.',
+        'You authorize Assembly HTX to charge the credit card on file per booking terms.',
+      ],
+    },
+  ],
+} as const;
+
 export const ACCENT = '#D4849A';
 export const ACCENT_HOVER = '#B86B82';
 
